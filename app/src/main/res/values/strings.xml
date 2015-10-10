@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">高铁侠</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+    <string name="search_label">搜索</string>
+    <string name="search_hint">提示</string>
+    <string name="search_button_text">SO</string>
 </resources>
