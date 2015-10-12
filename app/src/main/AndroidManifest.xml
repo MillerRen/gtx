@@ -22,8 +22,16 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"></meta-data>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
         </activity>
+        <provider
+            android:authorities="com.xxskb.gtx.provider.SearchSuggestionProvider"
+            android:name=".provider.SearchSuggestionProvider">
+
+        </provider>
     </application>
 
 </manifest>
