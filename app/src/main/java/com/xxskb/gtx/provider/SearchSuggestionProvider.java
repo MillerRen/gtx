@@ -28,7 +28,8 @@ public class SearchSuggestionProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Log.d("query", uri.toString());
+        String query = uri.getLastPathSegment();
+        Log.d("query", query);
         return null;
     }
 
