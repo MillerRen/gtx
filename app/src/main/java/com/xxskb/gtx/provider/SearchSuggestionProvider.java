@@ -1,18 +1,24 @@
 package com.xxskb.gtx.provider;
 
+import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.xxskb.gtx.db.SuggestionDataBase;
 
 /**
  * Created by renyufei on 15-10-12.
  */
 public class SearchSuggestionProvider extends ContentProvider {
     public static final String AUTHORITY = "com.xxskb.gtx.provider.SearchSuggestionProvider";
+
+    private SuggestionDataBase mSuggestionDataBase;
 
     @Nullable
     @Override
@@ -22,6 +28,7 @@ public class SearchSuggestionProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        mSuggestionDataBase = new SuggestionDataBase(getContext());
         return false;
     }
 
@@ -29,6 +36,13 @@ public class SearchSuggestionProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
+        String[] columns = new String[]{
+                BaseColumns._ID,
+                SuggestionDataBase.KEY_WORD,
+                SuggestionDataBase.KEY_DEFINTION,
+                SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
+        };
+        mSuggestionDataBase.match(query, columns);
         Log.d("query", query);
         return null;
     }
