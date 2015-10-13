@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        handleIntent();
+        handleIntent(getIntent());
 
 
     }
@@ -46,15 +47,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void  onNewIntent(Intent intent){
         setIntent(intent);
-        handleIntent();
-    }
-
-    private void handleIntent(){
-        Intent intent = getIntent();
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i("query", query);
-        }
+        handleIntent(intent);
     }
 
     @Override
@@ -72,12 +65,6 @@ public class MainActivity extends BaseActivity {
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setSubmitButtonEnabled(true);
 
-        ImageView icon = (ImageView)searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        icon.setAdjustViewBounds(true);
-        icon.setMaxWidth(0);
-        icon.setLayoutParams(new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT));
-        icon.setImageDrawable(null);
-
         return true;
     }
 
@@ -94,5 +81,20 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleIntent(Intent intent){
+
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+        else if(Intent.ACTION_VIEW.equals(intent.getAction())){
+            Intent trainIntent = new Intent(this, TrainActivity.class);
+        }
+    }
+
+    private void doMySearch(String query){
+        Log.d("query", query);
     }
 }

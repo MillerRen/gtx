@@ -16,7 +16,6 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -27,11 +26,14 @@
                 android:resource="@xml/searchable">
             </meta-data>
         </activity>
+        <activity android:name=".view.TrainActivity">
+
+        </activity>
         <provider
             android:authorities="com.xxskb.gtx.provider.SearchSuggestionProvider"
             android:name=".provider.SearchSuggestionProvider">
-
         </provider>
+        <meta-data android:name="android.app.default_searchable" android:value=".view.MainActivity"></meta-data>
     </application>
 
 </manifest>

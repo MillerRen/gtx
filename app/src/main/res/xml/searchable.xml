@@ -2,6 +2,6 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/search_label"
     android:hint="@string/search_hint"
-    android:searchSuggestAuthority="com.xxskb.gtx.provider.SearchSuggestionProvider"
-    android:includeInGlobalSearch="true">
+    android:searchSuggestIntentAction="android.intent.VIEW"
+    android:searchSuggestAuthority="com.xxskb.gtx.provider.SearchSuggestionProvider" >
 </searchable>
