@@ -32,8 +32,8 @@
 
         </activity>
         <provider
-            android:authorities="com.xxskb.gtx.provider.SearchSuggestionProvider"
-            android:name=".provider.SearchSuggestionProvider">
+            android:authorities="com.xxskb.gtx.provider.TrainProvider"
+            android:name=".provider.TrainProvider">
         </provider>
         <meta-data android:name="android.app.default_searchable" android:value=".view.MainActivity"></meta-data>
     </application>

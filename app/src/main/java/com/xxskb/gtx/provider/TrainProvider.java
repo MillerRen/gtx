@@ -3,23 +3,21 @@ package com.xxskb.gtx.provider;
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.xxskb.gtx.db.SuggestionDataBase;
+import com.xxskb.gtx.db.TrainDatabase;
 
 /**
  * Created by renyufei on 15-10-12.
  */
-public class SearchSuggestionProvider extends ContentProvider {
-    public static final String AUTHORITY = "com.xxskb.gtx.provider.SearchSuggestionProvider";
+public class TrainProvider extends ContentProvider {
+    public static final String AUTHORITY = "com.xxskb.gtx.provider.TrainProvider";
     public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/search");
 
-    private SuggestionDataBase mSuggestionDataBase;
+    private TrainDatabase trainDatabase;
 
     @Nullable
     @Override
@@ -29,7 +27,7 @@ public class SearchSuggestionProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mSuggestionDataBase = new SuggestionDataBase(getContext());
+        trainDatabase = new TrainDatabase(getContext());
         return false;
     }
 
@@ -39,11 +37,11 @@ public class SearchSuggestionProvider extends ContentProvider {
         String query = uri.getLastPathSegment();
         String[] columns = new String[]{
                 BaseColumns._ID,
-                SuggestionDataBase.KEY_WORD,
-                SuggestionDataBase.KEY_DEFINTION,
+                TrainDatabase.KEY_WORD,
+                TrainDatabase.KEY_DEFINTION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
         };
-        Cursor cursor = mSuggestionDataBase.match(query, columns);
+        Cursor cursor = trainDatabase.match(query, columns);
         //Log.d("query", query);
         return cursor;
     }

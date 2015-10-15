@@ -22,7 +22,7 @@ import java.util.HashMap;
 /**
  * Created by renyufei on 15-10-13.
  */
-public class SuggestionDataBase {
+public class TrainDatabase {
 
     private final static String TAG = "suggestiondatabase";
 
@@ -36,7 +36,7 @@ public class SuggestionDataBase {
     private final SuggestionDatabaseHelper mDatabaseHelper;
     private final HashMap<String, String> mColumnMap = buildColumnMap();
 
-    public SuggestionDataBase(Context context){
+    public TrainDatabase(Context context){
         this.mDatabaseHelper = new SuggestionDatabaseHelper(context);
     }
 

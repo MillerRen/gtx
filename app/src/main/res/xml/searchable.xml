@@ -3,6 +3,5 @@
     android:label="@string/search_label"
     android:hint="@string/search_hint"
     android:searchSuggestIntentAction="android.intent.VIEW"
-    android:searchSuggestIntentData="com.xxskb.gtx.provider.SearchSuggestionProvider/station"
-    android:searchSuggestAuthority="com.xxskb.gtx.provider.SearchSuggestionProvider" >
+    android:searchSuggestAuthority="com.xxskb.gtx.provider.TrainProvider" >
 </searchable>
