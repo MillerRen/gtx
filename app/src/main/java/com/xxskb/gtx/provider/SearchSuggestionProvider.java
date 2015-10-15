@@ -17,6 +17,7 @@ import com.xxskb.gtx.db.SuggestionDataBase;
  */
 public class SearchSuggestionProvider extends ContentProvider {
     public static final String AUTHORITY = "com.xxskb.gtx.provider.SearchSuggestionProvider";
+    public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/search");
 
     private SuggestionDataBase mSuggestionDataBase;
 
@@ -42,9 +43,9 @@ public class SearchSuggestionProvider extends ContentProvider {
                 SuggestionDataBase.KEY_DEFINTION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
         };
-        mSuggestionDataBase.match(query, columns);
-        Log.d("query", query);
-        return null;
+        Cursor cursor = mSuggestionDataBase.match(query, columns);
+        //Log.d("query", query);
+        return cursor;
     }
 
     @Nullable
