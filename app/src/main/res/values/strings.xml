@@ -2,5 +2,5 @@
     <string name="app_name">高铁侠</string>
     <string name="action_settings">设置</string>
     <string name="search_label">搜索</string>
-    <string name="search_hint">北京 上海 2015-10-01</string>
+    <string name="search_hint">北京 上海 10-01</string>
 </resources>

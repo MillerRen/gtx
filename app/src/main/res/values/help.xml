@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="help">
+        <item>使用方式：</item>
+        <item>线路如：“北京 上海 10-01” 或“北京 上海”</item>
+        <item>车站如：“北京” 包含车次和车站介绍</item>
+        <item>车次如：“D321” 包含列车各站时刻</item>
+    </string-array>
+</resources>

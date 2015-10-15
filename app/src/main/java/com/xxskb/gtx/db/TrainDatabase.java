@@ -51,7 +51,7 @@ public class TrainDatabase {
         return map;
     }
 
-    public Cursor match(String query, String[] columns){
+    public Cursor suggest(String query, String[] columns){
         String selection = KEY_WORD + " MATCH ?";
         String[] selectArgs = new String[]{query+"*"};
         return query(selection, selectArgs, columns);

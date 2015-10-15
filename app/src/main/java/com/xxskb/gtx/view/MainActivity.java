@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
@@ -30,6 +31,9 @@ import android.widget.ListView;
 import com.xxskb.gtx.R;
 import com.xxskb.gtx.provider.TrainProvider;
 import com.xxskb.gtx.view.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -50,6 +54,11 @@ public class MainActivity extends BaseActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        String[] array = getResources().getStringArray(R.array.help);
+        ListView help = (ListView) findViewById(R.id.suggestions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, array);
+        help.setAdapter(adapter);
 
     }
 
