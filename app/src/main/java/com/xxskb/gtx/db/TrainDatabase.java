@@ -28,9 +28,11 @@ public class TrainDatabase {
 
     public final static String KEY_PY = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public final static String KEY_STATION = SearchManager.SUGGEST_COLUMN_TEXT_2;
+    public final static String KEY_CODE = "station_code";
+    public final static String KEY_PINYIN = "station_pinyin";
 
     private final static String DATABASE_NAME = "skb";
-    private final static  int DATABASE_VERSION = 1;
+    private final static  int DATABASE_VERSION = 2;
     private final static String SUGGESTION_TABLE = "suggestion";
 
     private final SuggestionDatabaseHelper mDatabaseHelper;
@@ -84,7 +86,9 @@ public class TrainDatabase {
                 "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
                 " USING fts3 (" +
                         KEY_PY + "," +
-                        KEY_STATION +
+                        KEY_STATION + "," +
+                        KEY_CODE + "," +
+                        KEY_PINYIN + "," +
                         ");";
 
         public SuggestionDatabaseHelper(Context context) {
@@ -127,7 +131,7 @@ public class TrainDatabase {
                         //Log.d(TAG, row);
                         String[] columns = row.split("\\|");
                         //Log.d(TAG, columns[0]+columns[1]+columns[2]);
-                        Long id = addData(columns[0], columns[1]);
+                        Long id = addData(columns[0], columns[1], columns[2], columns[3]);
                         if(id<0){
                             Log.d(TAG, "unable to insert station");
                         }
@@ -141,17 +145,20 @@ public class TrainDatabase {
 
         }
 
-        private Long addData(String word, String definition){
+        private Long addData(String py, String name, String code, String pinyin){
             //Log.d(TAG,word+definition);
             ContentValues cv = new ContentValues();
-            cv.put(KEY_PY, word);
-            cv.put(KEY_STATION, definition);
+            cv.put(KEY_PY, py);
+            cv.put(KEY_STATION, name);
+            cv.put(KEY_CODE, code);
+            cv.put(KEY_PINYIN, pinyin);
+
             return mDatabase.insert(SUGGESTION_TABLE, null, cv);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS" + SUGGESTION_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + SUGGESTION_TABLE);
             onCreate(db);
         }
     }
