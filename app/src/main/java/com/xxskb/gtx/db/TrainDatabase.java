@@ -52,7 +52,7 @@ public class TrainDatabase {
     }
 
     public Cursor suggest(String query, String[] columns){
-        String selection = KEY_WORD + " MATCH ?";
+        String selection = SUGGESTION_TABLE + " MATCH ?";
         String[] selectArgs = new String[]{query+"*"};
         return query(selection, selectArgs, columns);
     }

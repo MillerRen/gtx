@@ -116,15 +116,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void handleIntent(Intent intent){
-        Log.d("query", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
             doMySearch(query);
         }
         else if(Intent.ACTION_VIEW.equals(intent.getAction())){
-            Intent trainIntent = new Intent(this, TrainActivity.class);
-
+            //Intent trainIntent = new Intent(this, TrainActivity.class);
+            finish();
         }
     }
 
