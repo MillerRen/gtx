@@ -26,8 +26,8 @@ public class TrainDatabase {
 
     private final static String TAG = "suggestiondatabase";
 
-    public final static String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
-    public final static String KEY_DEFINTION = SearchManager.SUGGEST_COLUMN_TEXT_2;
+    public final static String KEY_PY = SearchManager.SUGGEST_COLUMN_TEXT_1;
+    public final static String KEY_STATION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
     private final static String DATABASE_NAME = "skb";
     private final static  int DATABASE_VERSION = 1;
@@ -42,8 +42,8 @@ public class TrainDatabase {
 
     private HashMap<String, String> buildColumnMap(){
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put(KEY_WORD, KEY_WORD);
-        map.put(KEY_DEFINTION, KEY_DEFINTION);
+        map.put(KEY_PY, KEY_PY);
+        map.put(KEY_STATION, KEY_STATION);
         map.put(BaseColumns._ID, "rowid as " + BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
         map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid as "+SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
@@ -83,8 +83,9 @@ public class TrainDatabase {
         private final static String CREATE_SUGGESTION_TABLE =
                 "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
                 " USING fts3 (" +
-                KEY_WORD + ","
-                +KEY_DEFINTION + ");";
+                        KEY_PY + "," +
+                        KEY_STATION +
+                        ");";
 
         public SuggestionDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -143,8 +144,8 @@ public class TrainDatabase {
         private Long addData(String word, String definition){
             //Log.d(TAG,word+definition);
             ContentValues cv = new ContentValues();
-            cv.put(KEY_WORD, word);
-            cv.put(KEY_DEFINTION, definition);
+            cv.put(KEY_PY, word);
+            cv.put(KEY_STATION, definition);
             return mDatabase.insert(SUGGESTION_TABLE, null, cv);
         }
 

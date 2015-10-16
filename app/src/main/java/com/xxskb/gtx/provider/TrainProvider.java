@@ -59,8 +59,8 @@ public class TrainProvider extends ContentProvider {
     private Cursor suggest(String query){
         String[] columns = new String[]{
                 BaseColumns._ID,
-                TrainDatabase.KEY_WORD,
-                TrainDatabase.KEY_DEFINTION,
+                TrainDatabase.KEY_PY,
+                TrainDatabase.KEY_STATION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
         };
 
