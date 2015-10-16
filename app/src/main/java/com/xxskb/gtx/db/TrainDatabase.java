@@ -85,6 +85,7 @@ public class TrainDatabase {
         private final static String CREATE_SUGGESTION_TABLE =
                 "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
                 " USING fts3 (" +
+                        BaseColumns._ID + " INTERGER PRIMARY KEY AUTOINCREAMENT, " +
                         KEY_PY + "," +
                         KEY_STATION + "," +
                         KEY_CODE + "," +
@@ -130,7 +131,7 @@ public class TrainDatabase {
                         //Log.d(TAG, row);
                         String[] columns = row.split("\\|");
                         //Log.d(TAG, columns[0]+columns[1]+columns[2]);
-                        Long id = addData(columns[0], columns[1], columns[2], columns[3]);
+                        Long id = addData(columns[0], columns[1], columns[2], columns[3], columns[5]);
                         if(id<0){
                             Log.d(TAG, "unable to insert station");
                         }
@@ -144,13 +145,14 @@ public class TrainDatabase {
 
         }
 
-        private Long addData(String py, String name, String code, String pinyin){
+        private Long addData(String py, String name, String code, String pinyin, String id){
             //Log.d(TAG,word+definition);
             ContentValues cv = new ContentValues();
             cv.put(KEY_PY, py);
             cv.put(KEY_STATION, name);
             cv.put(KEY_CODE, code);
             cv.put(KEY_PINYIN, pinyin);
+            cv.put(BaseColumns._ID, id);
 
             return mDatabase.insert(SUGGESTION_TABLE, null, cv);
         }
