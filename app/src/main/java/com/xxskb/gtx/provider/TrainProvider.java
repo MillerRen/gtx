@@ -57,6 +57,10 @@ public class TrainProvider extends ContentProvider {
     }
 
     private Cursor suggest(String query){
+        String[] fields = query.split(" ");
+        if(fields.length>1){
+            query = fields[1];
+        }
         String[] columns = new String[]{
                 BaseColumns._ID,
                 TrainDatabase.KEY_PY,

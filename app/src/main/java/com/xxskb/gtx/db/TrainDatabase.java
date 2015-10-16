@@ -88,8 +88,7 @@ public class TrainDatabase {
                         KEY_PY + "," +
                         KEY_STATION + "," +
                         KEY_CODE + "," +
-                        KEY_PINYIN + "," +
-                        ");";
+                        KEY_PINYIN + "," + ");";
 
         public SuggestionDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
