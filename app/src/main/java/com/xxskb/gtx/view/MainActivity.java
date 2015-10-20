@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.xxskb.gtx.R;
 import com.xxskb.gtx.provider.TrainProvider;
+import com.xxskb.gtx.util.QueryParser;
 import com.xxskb.gtx.view.BaseActivity;
 
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    private SearchView searchView;
+    private String from_code;
+    private String to_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +83,7 @@ public class MainActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        setUpSearchView(searchView);
+        setUpSearchView((SearchView) MenuItemCompat.getActionView(searchItem));
 
         return true;
     }
@@ -106,22 +107,19 @@ public class MainActivity extends BaseActivity {
         //Log.d("suggestion", intent.getAction());
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
+
+//            Intent newIntent = new Intent(this, TrainActivity.class);
+//            newIntent.setData(intent.getData());
+//            startActivity(newIntent);
+        }else if(Intent.ACTION_VIEW.equals(intent.getAction())){
+            String from = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
+            Log.d("suggestion", from);
         }
     }
 
-    private String changeQuery(String station, String query){
-        String[] fields = query.split(" ");
-        String the_query=query;
-        int len = fields.length;
-        if(len==1){
-            the_query = station;
-        }else {
-            fields[1]=station;
-            the_query = TextUtils.join(" ", fields);
-        }
 
-        return the_query;
-    }
+
+
 
     private void setUpSearchView(final SearchView searchView){
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -140,7 +138,7 @@ public class MainActivity extends BaseActivity {
                 //Log.d("suggestion", String.valueOf(position));
                 Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
                 String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-                searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
+                searchView.setQuery(QueryParser.changeQuery(station, searchView.getQuery().toString()), false);
 
                 return true;
             }

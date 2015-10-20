@@ -28,11 +28,11 @@ public class TrainDatabase {
 
     public final static String KEY_PY = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public final static String KEY_STATION = SearchManager.SUGGEST_COLUMN_TEXT_2;
-    public final static String KEY_CODE = "station_code";
+    public final static String KEY_CODE = SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA;
     public final static String KEY_PINYIN = "station_pinyin";
 
     private final static String DATABASE_NAME = "skb";
-    private final static  int DATABASE_VERSION = 2;
+    private final static  int DATABASE_VERSION = 3;
     private final static String SUGGESTION_TABLE = "suggestion";
 
     private final SuggestionDatabaseHelper mDatabaseHelper;
