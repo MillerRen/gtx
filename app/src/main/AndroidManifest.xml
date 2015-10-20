@@ -38,4 +38,6 @@
         <meta-data android:name="android.app.default_searchable" android:value=".view.MainActivity"></meta-data>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
 </manifest>

@@ -96,10 +96,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public boolean onSuggestionClick(int position) {
-                Log.d("suggestion", String.valueOf(position));
+                //Log.d("suggestion", String.valueOf(position));
                 Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
                 String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
                 searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
+
                 return true;
             }
         });
@@ -123,7 +124,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void handleIntent(Intent intent){
-        Log.d("suggestion", intent.getAction());
+        //Log.d("suggestion", intent.getAction());
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
             doMySearch(query);
@@ -134,7 +135,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void doMySearch(String query){
-
+        Log.d("suggestion", query);
     }
 
     private String changeQuery(String station, String query){
