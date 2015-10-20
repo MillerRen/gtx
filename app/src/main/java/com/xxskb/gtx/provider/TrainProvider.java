@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.xxskb.gtx.db.TrainDatabase;
 
@@ -15,7 +16,7 @@ import com.xxskb.gtx.db.TrainDatabase;
  */
 public class TrainProvider extends ContentProvider {
     public static final String AUTHORITY = "com.xxskb.gtx.provider.TrainProvider";
-    public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/search");
+    public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/suggestion");
 
     private TrainDatabase trainDatabase;
 
@@ -36,7 +37,7 @@ public class TrainProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
         Cursor cursor = suggest(query);
-        //Log.d("query", query);
+        Log.d("suggestion", "----"+query);
         return cursor;
     }
 

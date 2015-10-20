@@ -81,29 +81,8 @@ public class MainActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconified(false);
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        searchView.setSubmitButtonEnabled(true);
-//        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-//            @Override
-//            public boolean onSuggestionSelect(int position) {
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onSuggestionClick(int position) {
-//                //Log.d("suggestion", String.valueOf(position));
-//                Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-//                String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-//                searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
-//
-//                return true;
-//            }
-//        });
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        setUpSearchView(searchView);
 
         return true;
     }
@@ -127,15 +106,7 @@ public class MainActivity extends BaseActivity {
         //Log.d("suggestion", intent.getAction());
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
         }
-        else {
-            Log.d("suggestion", "view");
-        }
-    }
-
-    private void doMySearch(String query){
-        Log.d("suggestion", query);
     }
 
     private String changeQuery(String station, String query){
@@ -150,6 +121,30 @@ public class MainActivity extends BaseActivity {
         }
 
         return the_query;
+    }
+
+    private void setUpSearchView(final SearchView searchView){
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return true;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                //Log.d("suggestion", String.valueOf(position));
+                Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+                String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
+                searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
+
+                return true;
+            }
+        });
     }
 
 }

@@ -3,7 +3,6 @@
     android:label="@string/search_label"
     android:hint="@string/search_hint"
     android:searchSuggestIntentAction="android.intent.VIEW"
-    android:searchSuggestIntentData="content://com.xxskb.gtx.provider.TrainProvider/search"
-    android:searchMode="queryRewriteFromData"
+    android:searchSuggestIntentData="content://com.xxskb.gtx.provider.TrainProvider/suggestion"
     android:searchSuggestAuthority="com.xxskb.gtx.provider.TrainProvider" >
 </searchable>
