@@ -30,6 +30,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.xxskb.gtx.R;
 import com.xxskb.gtx.provider.TrainProvider;
@@ -61,9 +62,8 @@ public class MainActivity extends BaseActivity {
         });
 
         String[] array = getResources().getStringArray(R.array.help);
-        ListView help = (ListView) findViewById(R.id.suggestions);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, array);
-        help.setAdapter(adapter);
+        TextView help_text = (TextView) findViewById(R.id.help);
+        help_text.setText(TextUtils.join("\n\n", array));
 
     }
 
@@ -88,22 +88,22 @@ public class MainActivity extends BaseActivity {
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int position) {
-                return true;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int position) {
-                //Log.d("suggestion", String.valueOf(position));
-                Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-                String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-                searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
-
-                return true;
-            }
-        });
+//        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+//            @Override
+//            public boolean onSuggestionSelect(int position) {
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onSuggestionClick(int position) {
+//                //Log.d("suggestion", String.valueOf(position));
+//                Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+//                String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
+//                searchView.setQuery(changeQuery(station, searchView.getQuery().toString()), false);
+//
+//                return true;
+//            }
+//        });
 
         return true;
     }
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity {
             doMySearch(query);
         }
         else {
-
+            Log.d("suggestion", "view");
         }
     }
 
