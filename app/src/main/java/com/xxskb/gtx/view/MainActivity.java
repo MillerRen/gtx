@@ -45,6 +45,8 @@ public class MainActivity extends BaseActivity {
     private String from_code;
     private String to_code;
 
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +84,8 @@ public class MainActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        setUpSearchView((SearchView) MenuItemCompat.getActionView(searchItem));
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        setUpSearchView();
 
         return true;
     }
@@ -121,28 +123,30 @@ public class MainActivity extends BaseActivity {
 
 
 
-    private void setUpSearchView(final SearchView searchView){
+    private void setUpSearchView(){
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int position) {
-                return true;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int position) {
-                //Log.d("suggestion", String.valueOf(position));
-                Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-                String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-                searchView.setQuery(QueryParser.changeQuery(station, searchView.getQuery().toString()), false);
-
-                return true;
-            }
-        });
+        searchView.setOnSuggestionListener(suggestionListener);
     }
+
+    private SearchView.OnSuggestionListener suggestionListener = new SearchView.OnSuggestionListener(){
+        @Override
+        public boolean onSuggestionSelect(int position) {
+            return true;
+        }
+
+        @Override
+        public boolean onSuggestionClick(int position) {
+            //Log.d("suggestion", String.valueOf(position));
+            Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+            String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
+            searchView.setQuery(QueryParser.changeQuery(station, searchView.getQuery().toString()), false);
+
+            return true;
+        }
+    };
 
 }
