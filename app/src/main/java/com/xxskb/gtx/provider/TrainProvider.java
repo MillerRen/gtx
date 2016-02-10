@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.xxskb.gtx.db.TrainDatabase;
+import com.xxskb.gtx.db.TrainDatabaseHelper;
 
 /**
  * Created by renyufei on 15-10-12.
@@ -18,7 +18,7 @@ public class TrainProvider extends ContentProvider {
     public static final String AUTHORITY = "com.xxskb.gtx.provider.TrainProvider";
     public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/suggestion");
 
-    private TrainDatabase trainDatabase;
+    private TrainDatabaseHelper trainDatabaseHelper;
 
     @Nullable
     @Override
@@ -28,7 +28,7 @@ public class TrainProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        trainDatabase = new TrainDatabase(getContext());
+        trainDatabaseHelper = new TrainDatabaseHelper(getContext());
         return false;
     }
 
@@ -64,12 +64,12 @@ public class TrainProvider extends ContentProvider {
         }
         String[] columns = new String[]{
                 BaseColumns._ID,
-                TrainDatabase.KEY_PY,
-                TrainDatabase.KEY_STATION,
+                TrainDatabaseHelper.KEY_PY,
+                TrainDatabaseHelper.KEY_STATION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
         };
 
-        Cursor cursor = trainDatabase.suggest(query, columns);
+        Cursor cursor = trainDatabaseHelper.suggest(query, columns);
 
         return cursor;
     }

@@ -66,8 +66,14 @@ public class MainActivity extends BaseActivity {
         });
 
         String[] array = getResources().getStringArray(R.array.help);
-        TextView help_text = (TextView) findViewById(R.id.help);
+        final TextView help_text = (TextView) findViewById(R.id.help);
         help_text.setText(TextUtils.join("\n\n", array));
+        help_text.setOnClickListener(new TextView.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                help_text.setText("String");
+            }
+        });
 
     }
 
