@@ -45,9 +45,12 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
 
 
     private final HashMap<String, String> mColumnMap = buildColumnMap();
+    private Context mHelperContext;
+    private SQLiteDatabase mDatabase;
 
-    public TrainDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public TrainDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mHelperContext = context;
     }
 
 
@@ -57,7 +60,7 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         map.put(KEY_STATION, KEY_STATION);
         map.put(BaseColumns._ID, "rowid as " + BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
-        map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid as "+SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
+        map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid as " + SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
 
         return map;
     }
@@ -86,9 +89,48 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    private void initDatabase(){
+
+        new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        final Resources resources = mHelperContext.getResources();
+                       InputStream inputStream = resources.openRawResource(R.raw.station_name);
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                        String line;
+                        mDatabase.beginTransaction();
+                        while ((line = bufferedReader.readLine())!=null){
+                            String[] fields = line.split("@");
+                            for (int i = 1; i < fields.length-1; i++) {
+                                String row = fields[i];
+                                String[] columns = row.split("\\|");
+
+                                ContentValues cv = new ContentValues();
+                                cv.put(KEY_PY, columns[0]);
+                                cv.put(KEY_STATION, columns[1]);
+                                cv.put(KEY_CODE, columns[2]);
+                                cv.put(KEY_PINYIN, columns[3]);
+                                cv.put(BaseColumns._ID, columns[5]);
+
+                                mDatabase.insert(SUGGESTION_TABLE, null, cv);
+                            }
+                            mDatabase.setTransactionSuccessful();
+                        }
+                        mDatabase.endTransaction();
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        mDatabase = sqLiteDatabase;
         sqLiteDatabase.execSQL(CREATE_SUGGESTION_TABLE);
+        initDatabase();
     }
 
     @Override
@@ -96,92 +138,5 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SUGGESTION_TABLE);
         onCreate(sqLiteDatabase);
     }
-
-//    private static class SuggestionDatabaseHelper extends SQLiteOpenHelper{
-//
-//        private SQLiteDatabase mDatabase;
-//        private final Context mHelperContext;
-//
-//        private final static String CREATE_SUGGESTION_TABLE =
-//                "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
-//                " USING fts3 (" +
-//                        BaseColumns._ID + " INTERGER PRIMARY KEY AUTOINCREAMENT, " +
-//                        KEY_PY + "," +
-//                        KEY_STATION + "," +
-//                        KEY_CODE + "," +
-//                        KEY_PINYIN + "," + ");";
-//
-//        public SuggestionDatabaseHelper(Context context) {
-//            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-//            mHelperContext = context;
-//        }
-//
-//
-//        @Override
-//        public void onCreate(SQLiteDatabase db) {
-//            mDatabase = db;
-//            mDatabase.execSQL(CREATE_SUGGESTION_TABLE);
-//            loadSuggestion();
-//        }
-//
-//        private void loadSuggestion(){
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        loadStations();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }).start();
-//        }
-//
-//        private void loadStations() throws IOException{
-//            final Resources resources = mHelperContext.getResources();
-//            InputStream inputStream = resources.openRawResource(R.raw.station_name);
-//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//            try {
-//                String line;
-//                mDatabase.beginTransaction();
-//                while ((line = bufferedReader.readLine())!=null){
-//                    String[] fields = line.split("@");
-//                    for (int i = 1; i < fields.length-1; i++) {
-//                        String row = fields[i];
-//                        //Log.d(TAG, row);
-//                        String[] columns = row.split("\\|");
-//                        //Log.d(TAG, columns[0]+columns[1]+columns[2]);
-//                        Long id = addData(columns[0], columns[1], columns[2], columns[3], columns[5]);
-//                        if(id<0){
-//                            Log.d(TAG, "unable to insert station");
-//                        }
-//                    }
-//                    mDatabase.setTransactionSuccessful();
-//                }
-//            } finally {
-//                mDatabase.endTransaction();
-//                bufferedReader.close();
-//            }
-//
-//        }
-//
-//        private Long addData(String py, String name, String code, String pinyin, String id){
-//            //Log.d(TAG,word+definition);
-//            ContentValues cv = new ContentValues();
-//            cv.put(KEY_PY, py);
-//            cv.put(KEY_STATION, name);
-//            cv.put(KEY_CODE, code);
-//            cv.put(KEY_PINYIN, pinyin);
-//            cv.put(BaseColumns._ID, id);
-//
-//            return mDatabase.insert(SUGGESTION_TABLE, null, cv);
-//        }
-//
-//        @Override
-//        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//            db.execSQL("DROP TABLE IF EXISTS " + SUGGESTION_TABLE);
-//            onCreate(db);
-//        }
-//    }
 
 }
