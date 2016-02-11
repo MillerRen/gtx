@@ -1,46 +1,22 @@
 package com.xxskb.gtx.view;
 
-import android.app.ActionBar;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.app.SearchManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.xxskb.gtx.R;
-import com.xxskb.gtx.provider.TrainProvider;
 import com.xxskb.gtx.util.QueryParser;
-import com.xxskb.gtx.view.BaseActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends BaseActivity {
+public class MainActivity extends Activity {
 
     private String from_code;
     private String to_code;
@@ -51,29 +27,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         String[] array = getResources().getStringArray(R.array.help);
         final TextView help_text = (TextView) findViewById(R.id.help);
         help_text.setText(TextUtils.join("\n\n", array));
-        help_text.setOnClickListener(new TextView.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                help_text.setText("String");
-            }
-        });
 
     }
 
@@ -90,7 +49,7 @@ public class MainActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) searchItem.getActionView();
         setUpSearchView();
 
         return true;

@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.xxskb.gtx.db.TrainDatabaseHelper;
@@ -20,7 +19,6 @@ public class TrainProvider extends ContentProvider {
 
     private TrainDatabaseHelper trainDatabaseHelper;
 
-    @Nullable
     @Override
     public String getType(Uri uri) {
         return null;
@@ -32,7 +30,6 @@ public class TrainProvider extends ContentProvider {
         return false;
     }
 
-    @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
@@ -41,7 +38,6 @@ public class TrainProvider extends ContentProvider {
         return cursor;
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         return null;
