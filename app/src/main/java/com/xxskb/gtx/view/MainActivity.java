@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -95,6 +97,10 @@ public class MainActivity extends Activity {
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnSuggestionListener(suggestionListener);
+
+        int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView magImage = (ImageView) searchView.findViewById(magId);
+        magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
     }
 
     private SearchView.OnSuggestionListener suggestionListener = new SearchView.OnSuggestionListener(){
