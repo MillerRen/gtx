@@ -4,4 +4,5 @@
     <string name="action_update">更新</string>
     <string name="search_label">搜索</string>
     <string name="search_hint">北京 上海 10-01</string>
+    <string name="title_activity_update">更新</string>
 </resources>
