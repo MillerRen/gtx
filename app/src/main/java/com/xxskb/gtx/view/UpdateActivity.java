@@ -28,4 +28,20 @@ public class UpdateActivity extends ListActivity {
         return list;
     }
 
+    private void updateStation(){
+
+    }
+
+    private void updateTrain(){
+
+    }
+
+    private void updateSchedule(){
+
+    }
+
+    private void updatePrice(){
+
+    }
+
 }
