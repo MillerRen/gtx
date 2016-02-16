@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="update_text">
+        <item>更新车站</item>
+        <item>更新车次</item>
+        <item>更新时刻</item>
+        <item>更新票价</item>
+    </string-array>
+</resources>
