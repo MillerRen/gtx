@@ -83,9 +83,9 @@ public class MainActivity extends Activity {
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
 
-//            Intent newIntent = new Intent(this, TrainActivity.class);
-//            newIntent.setData(intent.getData());
-//            startActivity(newIntent);
+            Intent newIntent = new Intent(this, TrainActivity.class);
+            newIntent.setData(intent.getData());
+            startActivity(newIntent);
         }else if(Intent.ACTION_VIEW.equals(intent.getAction())){
             String from = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
             Log.d("suggestion", from);
