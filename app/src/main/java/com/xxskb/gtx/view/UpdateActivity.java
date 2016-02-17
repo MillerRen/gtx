@@ -25,7 +25,7 @@ public class UpdateActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        switch (id){
+        switch (position){
             case 0:
                 updateStation();
                 break;
