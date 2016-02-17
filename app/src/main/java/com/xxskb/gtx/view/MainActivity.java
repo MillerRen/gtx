@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
             String query = intent.getStringExtra(SearchManager.QUERY);
 
             Intent newIntent = new Intent(this, TrainActivity.class);
-            newIntent.setData(intent.getData());
+            newIntent.putExtra("query", query);
             startActivity(newIntent);
         }else if(Intent.ACTION_VIEW.equals(intent.getAction())){
             String from = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);

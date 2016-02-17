@@ -2,7 +2,9 @@ package com.xxskb.gtx.view;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.xxskb.gtx.R;
 
@@ -14,5 +16,12 @@ public class TrainActivity extends ListActivity {
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.line);
+        fetchData();
+    }
+
+    private void fetchData(){
+        Intent intent = getIntent();
+        String query = String.valueOf(intent.getStringExtra("query"));
+        Log.d("query", query);
     }
 }
