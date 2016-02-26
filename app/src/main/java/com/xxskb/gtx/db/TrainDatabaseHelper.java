@@ -61,7 +61,7 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(SUGGESTION_TABLE);
 
-        Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null);
+        Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null, "5");
 
         return cursor;
     }
