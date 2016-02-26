@@ -43,8 +43,6 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
                     KEY_CODE + "," +
                     KEY_PINYIN + "," + ");";
 
-
-    private final HashMap<String, String> mColumnMap = buildColumnMap();
     private Context mHelperContext;
     private SQLiteDatabase mDatabase;
 
@@ -53,38 +51,17 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         mHelperContext = context;
     }
 
-
-    private HashMap<String, String> buildColumnMap(){
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put(KEY_PY, KEY_PY);
-        map.put(KEY_STATION, KEY_STATION);
-        map.put(BaseColumns._ID, "rowid as " + BaseColumns._ID);
-        map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
-        map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid as " + SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
-
-        return map;
-    }
-
-    public Cursor suggest(String query, String[] columns){
+    public Cursor suggest(String query){
+        String[] fields = query.split(" ");
+        if(fields.length>1){
+            query = fields[1];
+        }
         String selection = SUGGESTION_TABLE + " MATCH ?";
         String[] selectArgs = new String[]{query+"*"};
-        return query(selection, selectArgs, columns);
-    }
-
-    private Cursor query(String selection, String[] selectArgs, String[] columns){
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(SUGGESTION_TABLE);
-        builder.setProjectionMap(mColumnMap);
 
-        Cursor cursor = builder.query(getReadableDatabase(), columns, selection, selectArgs, null, null, null);
-
-        if(null == cursor){
-            return null;
-        }
-        else if(!cursor.moveToFirst()){
-            cursor.close();
-            return null;
-        }
+        Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null);
 
         return cursor;
     }

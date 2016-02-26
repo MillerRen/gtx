@@ -33,7 +33,7 @@ public class TrainProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
-        Cursor cursor = suggest(query);
+        Cursor cursor = trainDatabaseHelper.suggest(query);
         //Log.d("suggestion", "----"+query);
         return cursor;
     }
@@ -53,20 +53,4 @@ public class TrainProvider extends ContentProvider {
         return 0;
     }
 
-    private Cursor suggest(String query){
-        String[] fields = query.split(" ");
-        if(fields.length>1){
-            query = fields[1];
-        }
-        String[] columns = new String[]{
-                BaseColumns._ID,
-                TrainDatabaseHelper.KEY_PY,
-                TrainDatabaseHelper.KEY_STATION,
-                SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
-        };
-
-        Cursor cursor = trainDatabaseHelper.suggest(query, columns);
-
-        return cursor;
-    }
 }
