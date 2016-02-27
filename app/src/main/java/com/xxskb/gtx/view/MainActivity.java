@@ -87,9 +87,6 @@ public class MainActivity extends Activity {
             Intent newIntent = new Intent(this, TrainActivity.class);
             newIntent.putExtras(bundle);
             startActivity(newIntent);
-        }else if(Intent.ACTION_VIEW.equals(intent.getAction())){
-            String from = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
-            Log.d("suggestion", from);
         }
     }
 
