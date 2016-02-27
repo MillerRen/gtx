@@ -15,7 +15,8 @@
             android:name=".view.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,9 @@
                 android:name="android.app.default_searchable"
                 android:value=".view.MainActivity" />
         </activity>
-        <activity android:name=".view.TrainActivity"></activity>
+        <activity
+            android:name=".view.TrainActivity"
+            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name=".provider.TrainProvider"

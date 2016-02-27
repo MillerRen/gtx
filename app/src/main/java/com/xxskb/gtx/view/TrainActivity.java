@@ -26,11 +26,11 @@ public class TrainActivity extends ListActivity implements LoaderManager.LoaderC
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.line);
-        mAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1,
-                null,
-                new String[]{TrainDatabaseHelper.KEY_STATION},
-                new String[]{android.R.id.text1});
+//        mAdapter = new SimpleCursorAdapter(this,
+//                android.R.layout.simple_list_item_1,
+//                null,
+//                new String[]{TrainDatabaseHelper.KEY_STATION},
+//                new String[]{android.R.id.text1});
         setListAdapter(mAdapter);
         fetchData();
     }
@@ -53,7 +53,7 @@ public class TrainActivity extends ListActivity implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader loader, Object o) {
-        
+
     }
 
     @Override
