@@ -82,9 +82,10 @@ public class MainActivity extends Activity {
         //Log.d("suggestion", intent.getAction());
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-
+            Bundle bundle = new Bundle();
+            bundle.putString("query", query);
             Intent newIntent = new Intent(this, TrainActivity.class);
-            newIntent.setData(intent.getData());
+            newIntent.putExtras(bundle);
             startActivity(newIntent);
         }else if(Intent.ACTION_VIEW.equals(intent.getAction())){
             String from = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);

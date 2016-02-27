@@ -51,19 +51,27 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
         mHelperContext = context;
     }
 
-    public Cursor suggest(String query){
+    public Cursor suggest(String query, String limit){
         String[] fields = query.split(" ");
-        if(fields.length>1){
-            query = fields[1];
-        }
+        query = query.split(" ").length>1?fields[1]:query;
+
         String selection = SUGGESTION_TABLE + " MATCH ?";
-        String[] selectArgs = new String[]{query+"*"};
+        String[] selectArgs = new String[]{query+(limit=="1"?"":"*")};
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(SUGGESTION_TABLE);
 
-        Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null, "5");
+        Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null, limit);
 
         return cursor;
+    }
+
+    public Cursor suggest(String query){
+        return suggest(query, "5");
+    }
+
+    private String getCodeFromName(String name){
+        Cursor cursor = suggest(name, "1");
+        return cursor.getString(cursor.getColumnIndex(name));
     }
 
     private void initDatabase(){
