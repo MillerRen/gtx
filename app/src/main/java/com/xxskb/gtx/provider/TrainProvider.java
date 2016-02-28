@@ -15,7 +15,7 @@ import com.xxskb.gtx.db.TrainDatabaseHelper;
  */
 public class TrainProvider extends ContentProvider {
     public static final String AUTHORITY = "com.xxskb.gtx.provider.TrainProvider";
-    public final static Uri  CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/suggestion");
+    public final static Uri  STATION_URI = Uri.parse("content://"+AUTHORITY+"/station");
 
     private TrainDatabaseHelper trainDatabaseHelper;
 
@@ -34,7 +34,7 @@ public class TrainProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
         Cursor cursor = trainDatabaseHelper.suggest(query);
-        //Log.d("suggestion", "----"+query);
+        Log.d("suggestion", "----"+query);
         return cursor;
     }
 

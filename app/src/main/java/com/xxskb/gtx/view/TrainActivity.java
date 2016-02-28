@@ -17,7 +17,7 @@ import com.xxskb.gtx.provider.TrainProvider;
 /**
  * Created by renyufei on 15-10-13.
  */
-public class TrainActivity extends ListActivity implements LoaderManager.LoaderCallbacks{
+public class TrainActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private SimpleCursorAdapter mAdapter;
 
     @Override
@@ -43,12 +43,13 @@ public class TrainActivity extends ListActivity implements LoaderManager.LoaderC
         String select = TrainDatabaseHelper.KEY_STATION + " MATCH ? ";
         String query = String.valueOf(bundle.getString("query"));Log.d("query",query);
         String[] selectArgs = new String[]{query};
-        return new CursorLoader(this, TrainProvider.CONTENT_URI, null, select, selectArgs, null);
+        return new CursorLoader(this, TrainProvider.STATION_URI, null, null, null, null);
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Object o) {
-        mAdapter.swapCursor((Cursor) o);
+    public void onLoadFinished(Loader loader, Cursor o) {
+        //Log.d("cursor", o.getString(o.getColumnIndex(TrainDatabaseHelper.KEY_STATION)));
+        mAdapter.swapCursor(o);
     }
 
     @Override

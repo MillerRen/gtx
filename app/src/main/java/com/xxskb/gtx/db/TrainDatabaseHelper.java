@@ -32,8 +32,8 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
     public final static String KEY_PINYIN = "station_pinyin";
 
     private final static String DATABASE_NAME = "skb";
-    private final static  int DATABASE_VERSION = 3;
-    private final static String SUGGESTION_TABLE = "suggestion";
+    private final static  int DATABASE_VERSION = 4;
+    private final static String SUGGESTION_TABLE = "station";
     private final static String CREATE_SUGGESTION_TABLE =
             "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
                     " USING fts3 (" +
