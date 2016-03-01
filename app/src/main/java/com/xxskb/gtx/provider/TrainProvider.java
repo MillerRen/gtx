@@ -34,7 +34,6 @@ public class TrainProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = uri.getLastPathSegment();
         Cursor cursor = trainDatabaseHelper.suggest(query);
-        Log.d("suggestion", "----"+query);
         return cursor;
     }
 

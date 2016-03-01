@@ -2,10 +2,12 @@ package com.xxskb.gtx.view;
 
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SimpleCursorAdapter;
@@ -41,9 +43,10 @@ public class TrainActivity extends ListActivity implements LoaderManager.LoaderC
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
         String select = TrainDatabaseHelper.KEY_STATION + " MATCH ? ";
-        String query = String.valueOf(bundle.getString("query"));Log.d("query",query);
+        String query = String.valueOf(bundle.getString("query"));//Log.d("query",getIntent().getDataString());
         String[] selectArgs = new String[]{query};
-        return new CursorLoader(this, TrainProvider.STATION_URI, null, null, null, null);
+        Uri uri = Uri.withAppendedPath(TrainProvider.STATION_URI, query);
+        return new CursorLoader(this, uri, new String[]{TrainDatabaseHelper.KEY_STATION}, null, null, null);
     }
 
     @Override
