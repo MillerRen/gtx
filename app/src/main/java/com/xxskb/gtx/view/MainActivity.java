@@ -20,8 +20,8 @@ import com.xxskb.gtx.util.QueryParser;
 
 public class MainActivity extends Activity {
 
-    private String from_code;
-    private String to_code;
+    private String from_code="";
+    private String to_code="";
 
     private SearchView searchView;
 
@@ -81,18 +81,16 @@ public class MainActivity extends Activity {
     private void handleIntent(Intent intent){
         //Log.d("suggestion", intent.getAction());
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Bundle bundle = new Bundle();
-            bundle.putString("query", query);
-            Intent newIntent = new Intent(this, TrainActivity.class);
-            newIntent.putExtras(bundle);
-            startActivity(newIntent);
+            if(from_code!=""&&to_code!="") {
+                Bundle bundle = new Bundle();
+                bundle.putString("from", from_code);
+                bundle.putString("to", to_code);
+                Intent newIntent = new Intent(this, TrainActivity.class);
+                newIntent.putExtras(bundle);
+                startActivity(newIntent);
+            }
         }
     }
-
-
-
-
 
     private void setUpSearchView(){
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -118,6 +116,8 @@ public class MainActivity extends Activity {
             //Log.d("suggestion", String.valueOf(position));
             Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
             String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
+            from_code = from_code==""?station:from_code;
+            to_code = from_code!=""?station:"";
             searchView.setQuery(QueryParser.changeQuery(station, searchView.getQuery().toString()), false);
 
             return true;
