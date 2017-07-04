@@ -1,24 +1,19 @@
 package com.xxskb.gtx.view;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
 import com.xxskb.gtx.R;
-import com.xxskb.gtx.util.QueryParser;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private String from_code="";
     private String to_code="";
@@ -41,7 +36,17 @@ public class MainActivity extends Activity {
     @Override
     protected void  onNewIntent(Intent intent){
         super.onNewIntent(intent);
-        handleIntent(intent);
+        //Log.d("suggestion", intent.getAction());
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            if(from_code!=""&&to_code!="") {
+                Bundle bundle = new Bundle();
+                bundle.putString("from", from_code);
+                bundle.putString("to", to_code);
+                Intent newIntent = new Intent(this, TrainActivity.class);
+                newIntent.putExtras(bundle);
+                startActivity(newIntent);
+            }
+        }
     }
 
 
@@ -50,9 +55,13 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchItem.getActionView();
-        setUpSearchView();
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
 
         return true;
     }
@@ -66,16 +75,11 @@ public class MainActivity extends Activity {
 
         switch (id){
             case R.id.action_update:
-                gotoUpdate();
+                startActivity(new Intent(this, UpdateActivity.class));
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void gotoUpdate(){
-        Intent intent = new Intent(this, UpdateActivity.class);
-        startActivity(intent);
     }
 
     private void handleIntent(Intent intent){
@@ -91,37 +95,5 @@ public class MainActivity extends Activity {
             }
         }
     }
-
-    private void setUpSearchView(){
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconified(false);
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnSuggestionListener(suggestionListener);
-
-        int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
-        ImageView magImage = (ImageView) searchView.findViewById(magId);
-        magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
-    }
-
-    private SearchView.OnSuggestionListener suggestionListener = new SearchView.OnSuggestionListener(){
-        @Override
-        public boolean onSuggestionSelect(int position) {
-            return true;
-        }
-
-        @Override
-        public boolean onSuggestionClick(int position) {
-            //Log.d("suggestion", String.valueOf(position));
-            Cursor item = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-            String station = item.getString(item.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-            from_code = from_code==""?station:from_code;
-            to_code = from_code!=""?station:"";
-            searchView.setQuery(QueryParser.changeQuery(station, searchView.getQuery().toString()), false);
-
-            return true;
-        }
-    };
 
 }

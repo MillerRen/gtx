@@ -45,7 +45,7 @@ public class TrainActivity extends ListActivity implements LoaderManager.LoaderC
     public Loader onCreateLoader(int i, Bundle bundle) {
         String from = String.valueOf(bundle.getString("from"));
         String to = String.valueOf(bundle.get("to"));
-        return new TrainLoader(this);
+        return new TrainLoader(this, bundle);
     }
 
     @Override
