@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xxskb.gtx.R;
@@ -29,13 +30,13 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
     public final static String KEY_PY = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public final static String KEY_STATION = SearchManager.SUGGEST_COLUMN_TEXT_2;
     public final static String KEY_CODE = SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA;
-    public final static String KEY_PINYIN = "station_pinyin";
+    public final static String KEY_PINYIN = SearchManager.SUGGEST_COLUMN_INTENT_DATA;
 
     private final static String DATABASE_NAME = "skb";
     private final static  int DATABASE_VERSION = 4;
-    private final static String SUGGESTION_TABLE = "station";
-    private final static String CREATE_SUGGESTION_TABLE =
-            "CREATE VIRTUAL TABLE " + SUGGESTION_TABLE +
+    private final static String STATION_TABLE = "station";
+    private final static String CREATE_STATION_TABLE =
+            "CREATE VIRTUAL TABLE " + STATION_TABLE +
                     " USING fts3 (" +
                     BaseColumns._ID + " INTERGER PRIMARY KEY AUTOINCREAMENT, " +
                     KEY_PY + "," +
@@ -53,12 +54,12 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor suggest(String query, String limit){
         String[] fields = query.split(" ");
-        query = query.split(" ").length>1?fields[1]:query;
-
-        String selection = SUGGESTION_TABLE + " MATCH ?";
+        query = fields.length>1?fields[1]:query;
+Log.d("suggestion", TextUtils.join(",", fields));
+        String selection = STATION_TABLE + " MATCH ?";
         String[] selectArgs = new String[]{query+(limit=="1"?"":"*")};
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(SUGGESTION_TABLE);
+        builder.setTables(STATION_TABLE);
 
         Cursor cursor = builder.query(getReadableDatabase(), null, selection, selectArgs, null, null, null, limit);
 
@@ -98,7 +99,7 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
                                 cv.put(KEY_PINYIN, columns[3]);
                                 cv.put(BaseColumns._ID, columns[5]);
 
-                                mDatabase.insert(SUGGESTION_TABLE, null, cv);
+                                mDatabase.insert(STATION_TABLE, null, cv);
                             }
                             mDatabase.setTransactionSuccessful();
                         }
@@ -114,13 +115,13 @@ public class TrainDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         mDatabase = sqLiteDatabase;
-        sqLiteDatabase.execSQL(CREATE_SUGGESTION_TABLE);
+        sqLiteDatabase.execSQL(CREATE_STATION_TABLE);
         initDatabase();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SUGGESTION_TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + STATION_TABLE);
         onCreate(sqLiteDatabase);
     }
 
